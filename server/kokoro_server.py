@@ -6,11 +6,11 @@ import numpy as np
 import soundfile as sf
 from kokoro import KPipeline
 
-LANGMAP = {"en": "a", "pt": "p", "a": "a", "p": "p"}
+LANGMAP = {"en": "a", "pt": "p", "a": "a", "p": "p", "it": "i", "es": "e", "fr": "f", "i": "i", "e": "e", "f": "f"}
 # Kokoro voice ids encode language+region in their first letter (a=American en,
 # b=British en, p=Brazilian pt, ...). Prefer that over the caller's lang so e.g.
 # a British voice (bm_lewis) is phonemized British, not American.
-VOICE_PREFIX_LANG = {"a": "a", "b": "b", "p": "p"}
+VOICE_PREFIX_LANG = {"a": "a", "b": "b", "p": "p", "i": "i", "e": "e", "f": "f"}
 PIPELINES = {}
 
 

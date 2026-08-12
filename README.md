@@ -1,5 +1,8 @@
 # johnny
 
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Maintenance](https://img.shields.io/badge/maintenance-passively--maintained-yellowgreen.svg)](CONTRIBUTING.md)
+
 A small **speech toolbox** — one CLI (`voice`) that any agent or script can call to
 speak, with pluggable TTS engines, named voices, a per-session auto-speak hook, and
 **reverse-speak**: when you drive a machine over SSH, its speech plays on *your*

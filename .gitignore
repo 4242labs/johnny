@@ -5,3 +5,9 @@ cache/
 .env
 # ...but the bundled attention chime IS part of the toolbox
 !assets/chime.wav
+
+# Claude Code -- local-only files stay untracked (kit hygiene)
+.claude/settings.local.json
+.claude/worktrees/
+.claude/hooks/*.local.json
+.worktrees/

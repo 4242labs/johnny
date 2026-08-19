@@ -111,6 +111,11 @@ ln -sf "$PWD/johnny/hooks/voice-speak.sh" ~/.local/bin/voice-speak
 It speaks the reply only if the agent didn't already speak this turn (never doubles),
 and no-ops for sessions where voice isn't active.
 
+The `UserPromptSubmit` half does double duty: besides stamping the turn, it re-injects
+the "speak the substance, write only what must be read" contract on every prompt while
+voice is on. The slash command states that once, at activation; a long session drifts
+off it, and one line per turn is what keeps replies short.
+
 > Want a **sound** instead of speech when an agent needs you — a beep on hand-back,
 > gated on idle? That's a separate tool: [**hey**](https://github.com/4242labs/hey).
 

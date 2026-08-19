@@ -133,8 +133,6 @@ ELEVEN_MODEL="${ELEVEN_MODEL:-eleven_multilingual_v2}"
 # Charlie) each serve both pt and en, so they require a language.
 voice_registry() {
   cat <<'EOF'
-Matilda|eleven|XrExE9yKIg1WjnnlVkGX|pt en
-Charlie|eleven|IKne3meq5aSn9XLyUdCD|en pt
 Sarah|kokoro|af_sarah|en
 Dora|kokoro|pf_dora|pt
 Fenrir|kokoro|am_fenrir|en

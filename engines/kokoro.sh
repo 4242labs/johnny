@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # engine: kokoro — local, Apache-2.0, multilingual (en + pt-BR)
 # Install: python3.12 -m venv ~/.cache/johnny/venv && that venv: pip install kokoro soundfile
 # (system python3 may be too new for spacy/thinc wheels; KOKORO_PYTHON points at the venv.)

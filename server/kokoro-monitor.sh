@@ -24,7 +24,7 @@ prop() { systemctl --user show "$UNIT" -p "$1" --value 2>/dev/null; }
 sample() {
   local ts mem_b cpu_ns kmem_mb kcpu_pct
   ts="$(now)"
-  mem_b="$(prop MemoryCurrent)";  [ -z "$mem_b" -o "$mem_b" = "[not set]" ] && mem_b=0
+  mem_b="$(prop MemoryCurrent)";  { [ -z "$mem_b" ] || [ "$mem_b" = "[not set]" ]; } && mem_b=0
   cpu_ns="$(prop CPUUsageNSec)";  [ -z "$cpu_ns" ] && cpu_ns=0
   kmem_mb=$(( mem_b / 1048576 ))
 

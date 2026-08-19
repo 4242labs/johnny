@@ -33,7 +33,7 @@ repo or session. For the ElevenLabs engine, copy `.env.example` to `.env` and ad
 ```sh
 voice voices                       # list the available voices: "Name (langs), engine"
 voice Fenrir "tests are green"     # single-language voice — just speak
-voice Dora "a migração terminou"   # any registered name works the same way
+voice Dora "a migração terminou"   # the name carries the language too
 voice say "quick and robotic"      # call an engine directly
 echo "piped text works too" | voice
 voice list                         # engines + availability

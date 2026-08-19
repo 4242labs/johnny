@@ -33,16 +33,15 @@ repo or session. For the ElevenLabs engine, copy `.env.example` to `.env` and ad
 ```sh
 voice voices                       # list the available voices: "Name (langs), engine"
 voice Fenrir "tests are green"     # single-language voice — just speak
-voice Matilda pt "a migração terminou"   # multi-language voice — give the language
+voice Dora "a migração terminou"   # the name carries the language too
 voice say "quick and robotic"      # call an engine directly
 echo "piped text works too" | voice
 voice list                         # engines + availability
 voice bench "compare the engines"  # play through every available engine
 ```
 
-A voice whose name maps to one language needs no language argument; a voice that
-serves several (e.g. an ElevenLabs voice doing both `en` and `pt`) will tell you which
-languages it offers if you don't pick one.
+A voice whose name maps to one language needs no language argument. Register a voice
+against several languages and it will tell you which it offers if you don't pick one.
 
 ### Voices
 
@@ -52,14 +51,16 @@ Defined in `config.sh` (`voice_registry`) — edit it to add your own. Each row 
 | Voice | Language(s) | Engine |
 |-------|-------------|--------|
 | Sarah / Dora / Fenrir / Alfred / Alex | en / pt / en / en-GB / pt | kokoro |
-| Matilda / Charlie | en + pt | eleven |
+
+No ElevenLabs voice ships by default — the engine is there, so add your own row with
+a key from your account.
 
 ## Slash command (Claude Code)
 
 Copy `commands/johnny.md` to `~/.claude/commands/johnny.md`. Then:
 
 - `/johnny` — lists the voices and waits for you to pick.
-- `/johnny <Name> [lang]` — turns on per-session voice; the agent speaks a short spoken
+- `/johnny <Name>` — turns on per-session voice; the agent speaks a short spoken
   gist before each reply (text still carries structure — code, tables, paths).
 - `/johnny off` — stops.
 
@@ -109,6 +110,11 @@ ln -sf "$PWD/johnny/hooks/voice-speak.sh" ~/.local/bin/voice-speak
 
 It speaks the reply only if the agent didn't already speak this turn (never doubles),
 and no-ops for sessions where voice isn't active.
+
+The `UserPromptSubmit` half does double duty: besides stamping the turn, it re-injects
+the "speak the substance, write only what must be read" contract on every prompt while
+voice is on. The slash command states that once, at activation; a long session drifts
+off it, and one line per turn is what keeps replies short.
 
 > Want a **sound** instead of speech when an agent needs you — a beep on hand-back,
 > gated on idle? That's a separate tool: [**hey**](https://github.com/4242labs/hey).

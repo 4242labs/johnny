@@ -129,12 +129,11 @@ ELEVEN_MODEL="${ELEVEN_MODEL:-eleven_multilingual_v2}"
 # --- voice registry: real voice name -> engine · id · language(s) --------------
 # One row per voice: "Name|engine|engine-voice-id|langs" (langs space-separated,
 # first = default). Names match case-insensitively. No aliases — the name IS the
-# voice. Kokoro voices are single-language; the two eleven voices (Matilda,
-# Charlie) each serve both pt and en, so they require a language.
+# voice. Every shipped voice is kokoro and single-language, so none of them
+# needs a language argument; give a row several langs and that voice will ask
+# for one.
 voice_registry() {
   cat <<'EOF'
-Matilda|eleven|XrExE9yKIg1WjnnlVkGX|pt en
-Charlie|eleven|IKne3meq5aSn9XLyUdCD|en pt
 Sarah|kokoro|af_sarah|en
 Dora|kokoro|pf_dora|pt
 Fenrir|kokoro|am_fenrir|en

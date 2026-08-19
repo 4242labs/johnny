@@ -1,6 +1,6 @@
 ---
 description: " "
-argument-hint: "Matilda·pt/en (11labs) | Charlie·en/pt (11labs) | Sarah·en (kkr) | Dora·pt (kkr) | Fenrir·en (kkr) | Alfred·en-GB (kkr) | Alex·pt (kkr) | off"
+argument-hint: "Sarah·en | Dora·pt | Fenrir·en | Alfred·en-GB | Alex·pt | off"
 allowed-tools: Bash(voice:*), Bash(voice on:*), Bash(voice off), Bash(voice voices)
 ---
 Activate **johnny** for THIS session only — the agent speaks its replies aloud **on this machine** (johnny plays where the agent runs). Output only; input is unchanged (keep using your usual dictation tool). Do NOT listen/capture audio.
@@ -10,24 +10,22 @@ Requested: `$ARGUMENTS`
 ## If `$ARGUMENTS` is empty
 Do NOT pick a voice. Show the user the list below and ask which they want — nothing else.
 
-| Voice | Language(s) | Engine |
-|-------|-------------|--------|
-| Matilda | pt, en | eleven |
-| Charlie | en, pt | eleven |
-| Sarah   | en | kokoro |
-| Dora    | pt | kokoro |
-| Fenrir  | en | kokoro |
-| Alfred  | en (British) | kokoro |
-| Alex    | pt | kokoro |
+| Voice | Language |
+|-------|----------|
+| Sarah  | en |
+| Dora   | pt |
+| Fenrir | en |
+| Alfred | en (British) |
+| Alex   | pt |
 
-Call format: `/johnny <Name> [language]`. Single-language voices need no language; **Matilda** and **Charlie** require one (`pt` or `en`).
+Call format: `/johnny <Name>`.
 
 ## If `$ARGUMENTS` is `off` / `stop`
 Run `voice off`, confirm once. Nothing else.
 
 ## Otherwise — a name, optionally a language
 1. Run `voice on <Name> [lang]`.
-   - If it replies that the voice **needs a language** (Matilda/Charlie with none given), tell the user the languages available for that name and stop — do NOT guess a language.
+   - If it replies that the voice **needs a language**, tell the user the languages available for that name and stop — do NOT guess a language.
 2. On success, greet in character: just the voice's name + a brief question, in the chosen language. NO meta/status (never say "voice on", "activated", or name the engine/voice/language). Speak it via `voice <Name> [lang] "<greeting>"` and also write it.
    - en → «Hi! Fenrir here. What are we working on?»
    - pt → «Olá! Aqui é a Dora. O que temos pra hoje?»

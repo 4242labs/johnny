@@ -16,6 +16,7 @@ sid="$(printf '%s' "$payload" | python3 -c 'import json,sys;print(json.load(sys.
 [ -z "$sid" ] && exit 0
 
 export VOICE_HOME VOICE_SESSION="$sid"
+# shellcheck disable=SC1091
 . "$VOICE_HOME/config.sh"            # defines VOICE_OUT for THIS session
 
 [ -f "$VOICE_OUT.alias" ] || exit 0  # voice not active for this session

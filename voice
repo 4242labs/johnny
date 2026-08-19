@@ -10,6 +10,7 @@ while [ -h "$src" ]; do
   [ "${src#/}" = "$src" ] && src="$dir/$src"
 done
 VOICE_HOME="$(cd -P "$(dirname "$src")" && pwd)"
+# config.sh defines VOICE_CACHE/VOICE_OUT/_voice_* and the _voice_ssh_opts array.
 # shellcheck disable=SC1091
 source "$VOICE_HOME/config.sh"
 mkdir -p "$VOICE_CACHE"
@@ -30,8 +31,10 @@ EOF
 }
 
 list_engines() { for f in "$engines_dir"/*.sh; do basename "$f" .sh; done; }
+# shellcheck disable=SC1090  # engine files are resolved at runtime, one per engine
 is_available() { [ -f "$engines_dir/$1.sh" ] && ( source "$engines_dir/$1.sh"; engine_available ) >/dev/null 2>&1; }
 stop_audio()   { pkill -f "$VOICE_OUT\." 2>/dev/null; true; }   # barge-in: only THIS session's playback, never other agents'
+# shellcheck disable=SC1090  # ditto
 speak()        { ( source "$engines_dir/$1.sh"; engine_speak "$2" "$3" "$4" ); }
 
 [ $# -eq 0 ] && { usage; exit 0; }
@@ -52,6 +55,7 @@ case "$1" in
       # pre-warm the reverse-speak SSH master so the first utterance isn't slow
       if [ -z "${VOICE_LOCAL:-}" ] && [ -n "${SSH_CONNECTION:-}" ] && [ -f "$VOICE_SPEAK_KEY" ]; then
         mkdir -p "$HOME/.ssh/cm" 2>/dev/null
+        # shellcheck disable=SC2154  # _voice_ssh_opts comes from config.sh
         ( printf '' | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${SSH_CONNECTION%% *}" johnny-warm >/dev/null 2>&1 ) &
       fi
     elif [ $_rc -eq 2 ]; then
@@ -78,6 +82,11 @@ else
     _lgs="${_res#NEEDLANG }"
     echo "voice: '$1' needs a language — available: $(printf '%s' "$_lgs" | sed 's/ /, /g'). e.g. voice $1 ${_lgs%% *} \"...\"" >&2; exit 2
   elif [ -f "$engines_dir/$1.sh" ]; then ENGINE="$1"; shift   # bare engine name (kokoro/eleven/say)
+  elif [ -n "$_maybelang" ]; then
+    # `<word> en|pt <text>` can only be a voice invocation, so an unknown first token
+    # is a typo — not text. Without this the whole line falls through to `[TEXT...]`
+    # and the DEFAULT voice reads the name and the language out loud as the message.
+    echo "voice: unknown voice '$1' (run 'voice voices')" >&2; exit 1
   fi
 fi
 while [ $# -gt 0 ]; do

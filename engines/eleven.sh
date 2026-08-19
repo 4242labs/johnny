@@ -1,6 +1,9 @@
+# shellcheck shell=bash
 # engine: eleven — ElevenLabs cloud. Quality ceiling / benchmark. Needs ELEVEN_API_KEY.
 engine_available() { [ -n "${ELEVEN_API_KEY:-}" ]; }
 engine_speak() { # text lang voice
+  # shellcheck disable=SC2034  # lang is part of the engine_speak signature; this
+  # engine takes its language from ELEVEN_MODEL (multilingual), not from the arg
   local text="$1" lang="$2" voice="$3"
   voice="${voice:-$ELEVEN_VOICE_ID}"
   local out="${VOICE_OUT:-$VOICE_CACHE/eleven}.mp3"

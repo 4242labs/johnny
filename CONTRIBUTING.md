@@ -26,8 +26,17 @@ a good outcome, not a betrayal — this is a real answer, not a brush-off.
 
 ## Before you open a PR
 
-There is no automated test suite — johnny is shell plus a small Python playback server, and
-what it does is make noise. Exercise what you touched by hand, and say in the PR what you ran:
+Argument resolution has one check, and it runs without making a sound — it points
+`VOICE_SINK` at a dead port, so anything that gets as far as speaking is forwarded,
+fails, and is dropped:
+
+```bash
+./tests/test-voice-args.sh          # which token is a voice, an engine, or text
+shellcheck voice config.sh listen hooks/*.sh engines/*.sh server/*.sh tests/*.sh
+```
+
+Everything past that point makes noise, so exercise what you touched by hand and say
+in the PR what you ran:
 
 ```bash
 voice list                          # engines + availability

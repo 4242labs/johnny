@@ -1,7 +1,10 @@
-# johnny — config. Override any var via env before calling `voice`.
+# shellcheck shell=bash
+# johnny — config. Sourced, never executed, so it carries a shell directive instead
+# of a shebang. Override any var via env before calling `voice`.
 # VOICE_HOME is set by the `voice` script to its own dir (symlink-resolved); do not hardcode.
 
 # Load machine-local secrets/overrides (gitignored). Put ELEVEN_API_KEY here.
+# shellcheck disable=SC2153,SC1091  # VOICE_HOME comes from the caller; .env is machine-local
 [ -f "$VOICE_HOME/.env" ] && set -a && . "$VOICE_HOME/.env" && set +a
 
 VOICE_CACHE="${VOICE_CACHE:-${TMPDIR:-/tmp}/johnny-cache}"   # audio scratch (never in-repo)
@@ -22,6 +25,7 @@ _voice_playfile() {  # file
       _voice_log "playfile: plain afplay rc=$rc err='$err' -> trying launchctl asuser"
       err="$(launchctl asuser "$(id -u)" /usr/bin/afplay "$1" 2>&1)"; rc=$?
     fi
+    # shellcheck disable=SC2016  # the quotes are literal; $err is inside a double-quoted string
     _voice_log "playfile: afplay rc=$rc${err:+ err='$err'}"
     return $rc
   elif command -v paplay >/dev/null 2>&1; then paplay "$1"
@@ -101,6 +105,7 @@ _voice_reverse() {  # name lang text  -> 0 if the operator's machine accepted it
   mkdir -p "$HOME/.ssh/cm" 2>/dev/null
   local err; err="$(printf '%s %s\n%s' "$1" "$2" "$3" | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${host}" johnny-speak 2>&1)"
   local rc=$?
+  # shellcheck disable=SC2016  # the quotes are literal; $err is inside a double-quoted string
   _voice_log "reverse: ssh to ${VOICE_SPEAK_USER}@${host} rc=$rc${err:+ err='$err'}"
   return $rc
 }
@@ -175,6 +180,7 @@ voice_lookup() {  # name [lang]
       for l in $langs; do [ "$l" = "$lang" ] && { printf '%s|%s|%s\n' "$engine" "$id" "$l"; return 0; }; done
       printf 'NEEDLANG %s\n' "$langs"; return 2
     fi
+    # shellcheck disable=SC2086  # deliberate: split the space-separated language list
     set -- $langs
     [ $# -eq 1 ] && { printf '%s|%s|%s\n' "$engine" "$id" "$1"; return 0; }
     printf 'NEEDLANG %s\n' "$langs"; return 2

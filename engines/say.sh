@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # engine: say — macOS built-in. Zero-dep, instant, local. Baseline.
 engine_available() { command -v say >/dev/null; }
 engine_speak() { # text lang voice

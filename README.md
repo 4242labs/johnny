@@ -142,6 +142,11 @@ Never commit a real `ELEVEN_API_KEY` — keep it in the gitignored `.env`.
 | `kokoro` | `pip install kokoro soundfile` (Python 3.12) | natural, local, en + pt-BR; optional persistent server in `server/` |
 | `eleven` | `ELEVEN_API_KEY` in `.env` | best quality, cloud, paid |
 
+## Contributors
+
+<!-- contributors:start -->
+<!-- contributors:end -->
+
 ## License
 
 Open source — [AGPL-3.0](LICENSE). Commercial — contact ahoy@42labs.io.

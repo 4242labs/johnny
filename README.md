@@ -145,6 +145,7 @@ Never commit a real `ELEVEN_API_KEY` — keep it in the gitignored `.env`.
 ## Contributors
 
 <!-- contributors:start -->
+<a href="https://github.com/42piratas" title="42piratas"><img src="https://avatars.githubusercontent.com/u/18232600?v=4&s=64" width="64" height="64" alt="42piratas" /></a>
 <!-- contributors:end -->
 
 ## License

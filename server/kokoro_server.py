@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""johnny Kokoro TTS server — holds pipelines in RAM, serves WAV over HTTP (LAN-only)."""
+"""nina Kokoro TTS server — holds pipelines in RAM, serves WAV over HTTP (LAN-only)."""
 import io, json, sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
@@ -79,7 +79,7 @@ def main():
         except Exception as e:
             print(f"warm failed lang_code={lc}: {e}", file=sys.stderr, flush=True)
     srv = ThreadingHTTPServer(("0.0.0.0", port), Handler)
-    print(f"johnny kokoro server listening on :{port}", flush=True)
+    print(f"nina kokoro server listening on :{port}", flush=True)
     srv.serve_forever()
 
 

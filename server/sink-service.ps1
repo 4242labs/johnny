@@ -1,9 +1,9 @@
-# johnny — install the remote-sink daemon as a persistent Windows service (Task Scheduler).
+# nina — install the remote-sink daemon as a persistent Windows service (Task Scheduler).
 # Use on NATIVE Windows only (Python on Windows). WSL installs use sink-service.sh (systemd).
 #   powershell -ExecutionPolicy Bypass -File sink-service.ps1 [-Action install|uninstall|restart|status]
 param([ValidateSet('install','uninstall','restart','status')][string]$Action = 'install')
 
-$Task   = 'johnny-sink'
+$Task   = 'nina-sink'
 $Here   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Sink   = Join-Path $Here 'voice-sink.py'
 $Py     = (Get-Command python -ErrorAction SilentlyContinue).Source
@@ -23,7 +23,7 @@ switch ($Action) {
              -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit ([TimeSpan]::Zero)
     $env:VOICE_SINK_BIND = $Bind   # captured into the task's process env at run
     Register-ScheduledTask -TaskName $Task -Action $act -Trigger $trg -Settings $set -Force `
-      -Description "johnny remote-sink daemon (bind $Bind)" | Out-Null
+      -Description "nina remote-sink daemon (bind $Bind)" | Out-Null
     Start-ScheduledTask -TaskName $Task
     "installed Scheduled Task -> bind $Bind"
   }

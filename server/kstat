@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # kstat — remote snapshot of the Kokoro server's resource impact on its host.
-# Derives the host from johnny' KOKORO_SERVER (.env) and runs the monitor's
+# Derives the host from nina' KOKORO_SERVER (.env) and runs the monitor's
 # `report` over SSH. Symlink into ~/.local/bin for convenience.
 set -euo pipefail
 
@@ -17,4 +17,4 @@ KOKORO_SERVER="${KOKORO_SERVER:-${1:-}}"
 
 # host = strip scheme and :port
 host="${KOKORO_SERVER#*://}"; host="${host%%:*}"; host="${host%%/*}"
-ssh -o BatchMode=yes -o ConnectTimeout=6 "$host" '~/.cache/johnny/kokoro-monitor.sh report'
+ssh -o BatchMode=yes -o ConnectTimeout=6 "$host" '~/.cache/nina/kokoro-monitor.sh report'

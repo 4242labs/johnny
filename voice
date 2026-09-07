@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# johnny — speech toolbox. Any agent in any repo can speak by calling this CLI
+# nina — speech toolbox. Any agent in any repo can speak by calling this CLI
 # (symlink it onto PATH: ln -sf <repo>/voice ~/.local/bin/voice).
 set -uo pipefail
 
@@ -18,7 +18,7 @@ engines_dir="$VOICE_HOME/engines"
 
 usage() {
   cat <<EOF
-voice — johnny speech toolbox
+voice — nina speech toolbox
 
   voice [ENGINE] [--lang pt|en] [--voice NAME] [TEXT...]
   echo "text" | voice [ENGINE] [--lang pt|en]
@@ -46,17 +46,17 @@ case "$1" in
     exit 0 ;;
   voices)  # list the available voices as "Name (langs), engine"
     voice_menu; exit 0 ;;
-  on)   # `voice on <name> [lang]` — mark johnny active for this session (read by the Stop hook)
+  on)   # `voice on <name> [lang]` — mark nina active for this session (read by the Stop hook)
     _res="$(voice_lookup "${2:-}" "${3:-}")"; _rc=$?
     if [ $_rc -eq 0 ]; then
       _canon="$(voice_canon "$2")"; _lg="${_res##*|}"
       printf '%s %s' "$_canon" "$_lg" > "$VOICE_OUT.alias"
-      echo "johnny: '$_canon ($_lg)' active for this session"
+      echo "nina: '$_canon ($_lg)' active for this session"
       # pre-warm the reverse-speak SSH master so the first utterance isn't slow
       if [ -z "${VOICE_LOCAL:-}" ] && [ -n "${SSH_CONNECTION:-}" ] && [ -f "$VOICE_SPEAK_KEY" ]; then
         mkdir -p "$HOME/.ssh/cm" 2>/dev/null
         # shellcheck disable=SC2154  # _voice_ssh_opts comes from config.sh
-        ( printf '' | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${SSH_CONNECTION%% *}" johnny-warm >/dev/null 2>&1 ) &
+        ( printf '' | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${SSH_CONNECTION%% *}" nina-warm >/dev/null 2>&1 ) &
       fi
     elif [ $_rc -eq 2 ]; then
       _lgs="${_res#NEEDLANG }"
@@ -65,7 +65,7 @@ case "$1" in
     exit 0 ;;
   off)  # stop the per-session auto-speak hook
     rm -f "$VOICE_OUT.alias" "$VOICE_OUT.spoke" "$VOICE_OUT.turn" 2>/dev/null
-    echo "johnny: off for this session"; exit 0 ;;
+    echo "nina: off for this session"; exit 0 ;;
 esac
 
 MODE=speak; ENGINE=""; LANG_="$VOICE_LANG"; VOICE_NAME=""; ACTIVE_NAME=""; ARGS=()

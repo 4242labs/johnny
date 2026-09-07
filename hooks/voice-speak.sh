@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Claude Code Stop hook — HYBRID auto-speak safety net.
-# Speaks the turn's reply via johnny ONLY when:
-#   (a) johnny is active for this session  ($VOICE_OUT.alias exists, set by `voice on`), and
+# Speaks the turn's reply via nina ONLY when:
+#   (a) nina is active for this session  ($VOICE_OUT.alias exists, set by `voice on`), and
 #   (b) the model did NOT already speak this turn  (.spoke not newer than .turn).
 # So if the agent remembered to speak first, this no-ops; if it forgot, this covers it.
 # Enable: add to ~/.claude/settings.json under hooks.Stop (see CONTEXT "Auto-speak").

@@ -9,11 +9,11 @@ LAN (Linux or macOS); point clients at it with `KOKORO_SERVER=http://<host>:8123
 
 ```sh
 sudo apt-get install -y espeak-ng            # pt-BR/en phonemization
-python3 -m venv ~/.cache/johnny/venv
-~/.cache/johnny/venv/bin/pip install --upgrade pip
-~/.cache/johnny/venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
-~/.cache/johnny/venv/bin/pip install kokoro soundfile
-mkdir -p ~/.cache/johnny && cp kokoro_server.py ~/.cache/johnny/
+python3 -m venv ~/.cache/nina/venv
+~/.cache/nina/venv/bin/pip install --upgrade pip
+~/.cache/nina/venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+~/.cache/nina/venv/bin/pip install kokoro soundfile
+mkdir -p ~/.cache/nina && cp kokoro_server.py ~/.cache/nina/
 ```
 
 ## Run as a systemd user service (survives logout/reboot)
@@ -22,11 +22,11 @@ mkdir -p ~/.cache/johnny && cp kokoro_server.py ~/.cache/johnny/
 
 ```ini
 [Unit]
-Description=johnny Kokoro TTS server
+Description=nina Kokoro TTS server
 After=network.target
 
 [Service]
-ExecStart=%h/.cache/johnny/venv/bin/python %h/.cache/johnny/kokoro_server.py 8123
+ExecStart=%h/.cache/nina/venv/bin/python %h/.cache/nina/kokoro_server.py 8123
 Restart=on-failure
 RestartSec=3
 
@@ -65,14 +65,14 @@ sustained memory pressure, or the server ballooning — into a warning log.
 Install on the server (run via a systemd user timer):
 
 ```sh
-cp kokoro-monitor.sh ~/.cache/johnny/
-# ~/.config/systemd/user/kokoro-monitor.service  (Type=oneshot, ExecStart=%h/.cache/johnny/kokoro-monitor.sh sample)
+cp kokoro-monitor.sh ~/.cache/nina/
+# ~/.config/systemd/user/kokoro-monitor.service  (Type=oneshot, ExecStart=%h/.cache/nina/kokoro-monitor.sh sample)
 # ~/.config/systemd/user/kokoro-monitor.timer    (OnUnitActiveSec=60, Persistent=true)
 systemctl --user enable --now kokoro-monitor.timer
 ```
 
 - `kokoro-monitor.sh report` — latest sample, peaks, top non-kokoro memory users, warnings.
-- Logs: `~/.cache/johnny/monitor.csv`, `monitor.warn.log` (auto-rotated).
+- Logs: `~/.cache/nina/monitor.csv`, `monitor.warn.log` (auto-rotated).
 
 From a client, `kstat` snapshots it over SSH (host derived from `KOKORO_SERVER`):
 

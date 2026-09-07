@@ -1,4 +1,4 @@
-# johnny
+# nina
 
 A speech toolbox. Two CLIs, both tracked at the repository root:
 
@@ -39,7 +39,7 @@ arrives already knowing who it is, and reads this project to learn the project.
 
 No architect or data role is in use.
 
-**After any context loss, re-read your anchor under `~/.agent-anchors/johnny/`** (canon §17).
+**After any context loss, re-read your anchor under `~/.agent-anchors/nina/`** (canon §17).
 
 ## Key files
 
@@ -48,6 +48,6 @@ No architect or data role is in use.
 - `engines/` — one file per TTS engine (`say.sh`, `kokoro.sh`, `eleven.sh`); the extension point
 - `hooks/` — the per-session auto-speak wiring
 - `server/` — the local Kokoro TTS server (`kokoro_server.py`, `kokoro-monitor.sh`, `kstat`) and the reverse-speak sink (`voice-sink.py`, `voice-play`, `sink-service.sh`, `sink-service.ps1`)
-- `commands/johnny.md` — the slash command
+- `commands/nina.md` — the slash command
 - `tests/` — the test suite
 - `MEMO-CODEX-URGENT.md` — untracked. Its gate item is done; branch protection is still open

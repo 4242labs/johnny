@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# johnny — Kokoro resource monitor for the host it runs on.
+# nina — Kokoro resource monitor for the host it runs on.
 #   sample : append one CSV row (kokoro mem/cpu + system load/mem/swap/pressure). Run by a timer.
 #   report : print latest sample, peaks, and any pressure warnings.
-# Logs under ~/.cache/johnny/. Self-contained; no deps beyond coreutils + systemd.
+# Logs under ~/.cache/nina/. Self-contained; no deps beyond coreutils + systemd.
 set -u
-DIR="$HOME/.cache/johnny"
+DIR="$HOME/.cache/nina"
 CSV="$DIR/monitor.csv"
 STATE="$DIR/monitor.state"
 WARN="$DIR/monitor.warn.log"

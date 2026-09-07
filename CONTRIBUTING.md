@@ -1,6 +1,6 @@
 # Contributing
 
-**Status: passively maintained.** johnny is used daily at 42labs and gets commits
+**Status: passively maintained.** nina is used daily at 42labs and gets commits
 regularly — but it is not a staffed product. There is no support rota and no SLA. Issues
 and pull requests are welcome and genuinely read; expect a reply in weeks rather than
 days, and sometimes not at all. That is capacity, not disinterest. Plan accordingly
@@ -51,7 +51,7 @@ an utterance that simply never arrives, on a machine you are not sitting at.
 
 ## Licensing
 
-johnny is dual-licensed: AGPL-3.0 for open source, commercial terms on request — see
+nina is dual-licensed: AGPL-3.0 for open source, commercial terms on request — see
 [LICENSING.md](LICENSING.md).
 
 **By submitting a pull request you grant 42labs the right to distribute your contribution

@@ -1,4 +1,4 @@
-# johnny
+# nina
 
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Maintenance](https://img.shields.io/badge/maintenance-passively--maintained-yellowgreen.svg)](CONTRIBUTING.md)
@@ -21,8 +21,8 @@ machine instead of the remote box.
 ## Install
 
 ```sh
-git clone https://github.com/<you>/johnny.git
-ln -sf "$PWD/johnny/voice" ~/.local/bin/voice     # ~/.local/bin must be on PATH
+git clone https://github.com/<you>/nina.git
+ln -sf "$PWD/nina/voice" ~/.local/bin/voice     # ~/.local/bin must be on PATH
 ```
 
 `voice` resolves its own directory (even through the symlink), so it works from any
@@ -57,12 +57,12 @@ a key from your account.
 
 ## Slash command (Claude Code)
 
-Copy `commands/johnny.md` to `~/.claude/commands/johnny.md`. Then:
+Copy `commands/nina.md` to `~/.claude/commands/nina.md`. Then:
 
-- `/johnny` — lists the voices and waits for you to pick.
-- `/johnny <Name>` — turns on per-session voice; the agent speaks a short spoken
+- `/nina` — lists the voices and waits for you to pick.
+- `/nina <Name>` — turns on per-session voice; the agent speaks a short spoken
   gist before each reply (text still carries structure — code, tables, paths).
-- `/johnny off` — stops.
+- `/nina off` — stops.
 
 ## Reverse-speak — play where you sit
 
@@ -77,10 +77,10 @@ Setup (on the machine you sit at — the playback target):
    the speak command so it can do nothing else:
 
    ```
-   command="/path/to/johnny/server/voice-play",restrict ssh-ed25519 AAAA... johnny-reverse
+   command="/path/to/nina/server/voice-play",restrict ssh-ed25519 AAAA... nina-reverse
    ```
 
-3. On the remote box, create that key passphrase-less (`~/.ssh/id_johnny`) so it can
+3. On the remote box, create that key passphrase-less (`~/.ssh/id_nina`) so it can
    sign non-interactively, and set `VOICE_SPEAK_USER` in `.env` if your login there
    differs from your login on the playback machine.
 
@@ -98,13 +98,13 @@ the auto-target.
 Make the active agent speak every reply. Symlink the hook and register it:
 
 ```sh
-ln -sf "$PWD/johnny/hooks/voice-speak.sh" ~/.local/bin/voice-speak
+ln -sf "$PWD/nina/hooks/voice-speak.sh" ~/.local/bin/voice-speak
 ```
 
 ```json
 { "hooks": {
-  "UserPromptSubmit": [ { "hooks": [ { "type": "command", "command": "~/johnny/hooks/turn-mark.sh" } ] } ],
-  "Stop":             [ { "hooks": [ { "type": "command", "command": "~/johnny/hooks/voice-speak.sh" } ] } ]
+  "UserPromptSubmit": [ { "hooks": [ { "type": "command", "command": "~/nina/hooks/turn-mark.sh" } ] } ],
+  "Stop":             [ { "hooks": [ { "type": "command", "command": "~/nina/hooks/voice-speak.sh" } ] } ]
 } }
 ```
 

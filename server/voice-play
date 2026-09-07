@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# johnny — reverse-speak endpoint. Runs as an SSH *forced command* on the
+# nina — reverse-speak endpoint. Runs as an SSH *forced command* on the
 # operator's machine (where they physically sit). A fleet box that the operator
 # is driving remotely over SSH pipes to us:
 #     line 1 : "<Name> [lang]"    (the active voice, e.g. "Fenrir en")

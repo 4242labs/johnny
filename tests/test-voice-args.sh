@@ -7,7 +7,7 @@
 cd "$(dirname "$0")/.." || exit 1
 
 export VOICE_SINK="http://127.0.0.1:1" VOICE_SINK_TIMEOUT=1
-export VOICE_CACHE="${TMPDIR:-/tmp}/johnny-test-cache.$$"
+export VOICE_CACHE="${TMPDIR:-/tmp}/nina-test-cache.$$"
 trap 'rm -rf "$VOICE_CACHE"' EXIT
 
 fails=0

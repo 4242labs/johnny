@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 # engine: kokoro — local, Apache-2.0, multilingual (en + pt-BR)
-# Install: python3.12 -m venv ~/.cache/johnny/venv && that venv: pip install kokoro soundfile
+# Install: python3.12 -m venv ~/.cache/nina/venv && that venv: pip install kokoro soundfile
 # (system python3 may be too new for spacy/thinc wheels; KOKORO_PYTHON points at the venv.)
 # If KOKORO_SERVER is set, a persistent server does synthesis (sub-second) and the
 # local python is only a fallback. See server/kokoro_server.py.
@@ -26,7 +26,7 @@ engine_speak() { # text lang voice
         -H 'Content-Type: application/json' --data "$body" -o "$out" 2>/dev/null; then
       _voice_play _voice_playfile "$out"; return 0
     fi
-    echo "johnny: kokoro server $KOKORO_SERVER unreachable — falling back to local" >&2
+    echo "nina: kokoro server $KOKORO_SERVER unreachable — falling back to local" >&2
   fi
 
   "${KOKORO_PYTHON:-python3}" - "$text" "$voice" "$code" "$out" <<'PY' || return 1

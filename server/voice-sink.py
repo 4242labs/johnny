@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""johnny — remote playback sink.
+"""nina — remote playback sink.
 
 Runs on the machine where the operator sits. Agents on other boxes
 POST their spoken line here and it plays *here* instead of on the

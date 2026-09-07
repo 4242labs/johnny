@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-# johnny — config. Sourced, never executed, so it carries a shell directive instead
+# nina — config. Sourced, never executed, so it carries a shell directive instead
 # of a shebang. Override any var via env before calling `voice`.
 # VOICE_HOME is set by the `voice` script to its own dir (symlink-resolved); do not hardcode.
 
@@ -7,7 +7,7 @@
 # shellcheck disable=SC2153,SC1091  # VOICE_HOME comes from the caller; .env is machine-local
 [ -f "$VOICE_HOME/.env" ] && set -a && . "$VOICE_HOME/.env" && set +a
 
-VOICE_CACHE="${VOICE_CACHE:-${TMPDIR:-/tmp}/johnny-cache}"   # audio scratch (never in-repo)
+VOICE_CACHE="${VOICE_CACHE:-${TMPDIR:-/tmp}/nina-cache}"   # audio scratch (never in-repo)
 mkdir -p "$VOICE_CACHE" 2>/dev/null
 # Per-session token so concurrent agents isolate their audio files + playback and
 # never kill each other's afplay. Falls back to PID outside Claude Code.
@@ -30,7 +30,7 @@ _voice_playfile() {  # file
     return $rc
   elif command -v paplay >/dev/null 2>&1; then paplay "$1"
   elif command -v aplay >/dev/null 2>&1; then aplay -q "$1"
-  else echo "johnny: no audio player found (afplay/paplay/aplay)" >&2; return 1
+  else echo "nina: no audio player found (afplay/paplay/aplay)" >&2; return 1
   fi
 }
 
@@ -38,7 +38,7 @@ _voice_playfile() {  # file
 # overlapping (macOS has no flock; use an atomic mkdir mutex). Records that THIS
 # session spoke (for the hybrid Stop-hook safety net). Engines call this, not afplay/paplay directly.
 _voice_play() {  # cmd args...   (e.g. _voice_play _voice_playfile file.wav  |  _voice_play say -v X "text")
-  local lock="${TMPDIR:-/tmp}/johnny.audiolock" i=0
+  local lock="${TMPDIR:-/tmp}/nina.audiolock" i=0
   until mkdir "$lock" 2>/dev/null; do
     i=$((i+1)); [ "$i" -ge 300 ] && { rm -rf "$lock" 2>/dev/null; mkdir "$lock" 2>/dev/null; break; }  # steal stale lock after ~30s
     sleep 0.1
@@ -75,18 +75,18 @@ _voice_forward() {  # engine voice lang text  -> 0 if the sink accepted it
 
 # --- reverse-speak: play on the operator's machine when driving this box remotely
 # If this shell is an inbound SSH session (SSH_CONNECTION set), the operator is
-# elsewhere — send only the TEXT to their machine and let its johnny synthesize +
+# elsewhere — send only the TEXT to their machine and let its nina synthesize +
 # play (with the "hey" preamble). Transport is a multiplexed SSH forced-command
 # call; ControlMaster keeps it ~instant after the first. Returns non-zero on any
 # failure (or when we're local) so the caller falls back to local playback.
 VOICE_SPEAK_TARGET="${VOICE_SPEAK_TARGET:-}"                    # explicit host/IP (@machine); empty = auto from SSH origin
 VOICE_SPEAK_USER="${VOICE_SPEAK_USER:-${USER:-$(id -un)}}"      # login on the operator's machine (override in .env if it differs)
-VOICE_SPEAK_KEY="${VOICE_SPEAK_KEY:-$HOME/.ssh/id_johnny}"      # dedicated passphraseless key (forced to voice-play on the far end)
-# Diagnostic log (opt-in): `touch ~/.cache/johnny/debug.on` to enable.
+VOICE_SPEAK_KEY="${VOICE_SPEAK_KEY:-$HOME/.ssh/id_nina}"      # dedicated passphraseless key (forced to voice-play on the far end)
+# Diagnostic log (opt-in): `touch ~/.cache/nina/debug.on` to enable.
 _voice_log() {  # message...
-  [ -f "$HOME/.cache/johnny/debug.on" ] || return 0
-  mkdir -p "$HOME/.cache/johnny" 2>/dev/null
-  printf '%s [pid %s] %s\n' "$(date '+%H:%M:%S')" "$$" "$*" >> "$HOME/.cache/johnny/johnny.log" 2>/dev/null
+  [ -f "$HOME/.cache/nina/debug.on" ] || return 0
+  mkdir -p "$HOME/.cache/nina" 2>/dev/null
+  printf '%s [pid %s] %s\n' "$(date '+%H:%M:%S')" "$$" "$*" >> "$HOME/.cache/nina/nina.log" 2>/dev/null
 }
 # Shared ssh opts for the reverse channel: dedicated key only, multiplexed, fail-fast.
 _voice_ssh_opts=(-i "$VOICE_SPEAK_KEY" -o IdentitiesOnly=yes
@@ -103,7 +103,7 @@ _voice_reverse() {  # name lang text  -> 0 if the operator's machine accepted it
   command -v ssh >/dev/null 2>&1 || { _voice_log "reverse: no ssh binary"; return 1; }
   [ -f "$VOICE_SPEAK_KEY" ] || { _voice_log "reverse: key missing -> return 1"; return 1; }
   mkdir -p "$HOME/.ssh/cm" 2>/dev/null
-  local err; err="$(printf '%s %s\n%s' "$1" "$2" "$3" | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${host}" johnny-speak 2>&1)"
+  local err; err="$(printf '%s %s\n%s' "$1" "$2" "$3" | ssh "${_voice_ssh_opts[@]}" "${VOICE_SPEAK_USER}@${host}" nina-speak 2>&1)"
   local rc=$?
   # shellcheck disable=SC2016  # the quotes are literal; $err is inside a double-quoted string
   _voice_log "reverse: ssh to ${VOICE_SPEAK_USER}@${host} rc=$rc${err:+ err='$err'}"
@@ -116,7 +116,7 @@ SAY_VOICE_PT="${SAY_VOICE_PT:-Luciana}"
 
 # --- kokoro (local, Apache-2.0, multilingual) ---
 # kokoro's deps (spacy/thinc) need a py3.12 venv; auto-detect the conventional one.
-_kv="$HOME/.cache/johnny/venv/bin/python"
+_kv="$HOME/.cache/nina/venv/bin/python"
 KOKORO_PYTHON="${KOKORO_PYTHON:-$([ -x "$_kv" ] && echo "$_kv" || echo python3)}"
 KOKORO_VOICE_EN="${KOKORO_VOICE_EN:-af_heart}"
 KOKORO_VOICE_PT="${KOKORO_VOICE_PT:-pf_dora}"

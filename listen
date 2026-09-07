@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# johnny listen — local mic -> Whisper transcript.
+# nina listen — local mic -> Whisper transcript.
 # Capture needs mic permission, so RUN THIS FROM A MIC-GRANTED APP (Terminal.app or Zed.app),
 # NOT from an ad-hoc-signed app like ZedAn (macOS TCC blocks it silently).
 #

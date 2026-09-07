@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# johnny — install the remote-sink daemon as a persistent, OS-native service.
+# nina — install the remote-sink daemon as a persistent, OS-native service.
 #   macOS -> LaunchAgent (launchd)      Linux/WSL -> systemd --user unit
 # Native Windows: use sink-service.ps1 (Task Scheduler) instead.
 #
@@ -10,9 +10,9 @@ set -euo pipefail
 
 HERE="$(cd -P "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 SINK="$HERE/voice-sink.py"
-LABEL="com.johnny.sink"     # macOS
-UNIT="johnny-sink"                    # systemd
-LOG="$HOME/.cache/johnny/voice-sink.log"
+LABEL="com.nina.sink"     # macOS
+UNIT="nina-sink"                    # systemd
+LOG="$HOME/.cache/nina/voice-sink.log"
 action="${1:-install}"
 
 _tailscale() {
@@ -34,7 +34,7 @@ if [ "$action" = install ] && [ -z "$BIND" ]; then
   echo "WARN: no Tailscale IP found; sink would bind 127.0.0.1 (not reachable remotely)." >&2
   echo "      set VOICE_SINK_BIND=<this host's tailnet IP> and re-run." >&2
 fi
-mkdir -p "$HOME/.cache/johnny"
+mkdir -p "$HOME/.cache/nina"
 
 case "$(uname -s)" in
 Darwin)
@@ -75,7 +75,7 @@ Linux)
     mkdir -p "$DIR"
     cat > "$SVC" <<EOF
 [Unit]
-Description=johnny remote-sink daemon
+Description=nina remote-sink daemon
 After=network-online.target
 Wants=network-online.target
 

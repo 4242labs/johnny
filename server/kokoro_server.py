@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""johnny Kokoro TTS server — holds pipelines in RAM, serves WAV over HTTP (LAN-only)."""
-import io, json, sys
+"""nina Kokoro TTS server — holds pipelines in RAM, serves WAV over HTTP (LAN-only)."""
+import io, json, os, sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
 import soundfile as sf
@@ -78,8 +78,10 @@ def main():
             print(f"warmed pipeline lang_code={lc}", flush=True)
         except Exception as e:
             print(f"warm failed lang_code={lc}: {e}", file=sys.stderr, flush=True)
-    srv = ThreadingHTTPServer(("0.0.0.0", port), Handler)
-    print(f"johnny kokoro server listening on :{port}", flush=True)
+    # Single-box installs want loopback; a LAN server keeps the old default.
+    host = os.environ.get("KOKORO_BIND", "0.0.0.0")
+    srv = ThreadingHTTPServer((host, port), Handler)
+    print(f"nina kokoro server listening on {host}:{port}", flush=True)
     srv.serve_forever()
 
 

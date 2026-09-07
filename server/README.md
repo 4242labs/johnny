@@ -52,7 +52,8 @@ curl -s -X POST http://<host>:8123/speak \
   -d '{"text":"hello","voice":"am_fenrir","lang":"a"}' -o out.wav
 ```
 
-Bind is `0.0.0.0:8123`, no auth — intended for a trusted LAN only. Do not expose
+Bind is `0.0.0.0:8123` (override with `KOKORO_BIND`, e.g. `127.0.0.1` for a
+single-box install), no auth — intended for a trusted LAN only. Do not expose
 it to the public internet without a reverse proxy + auth.
 
 ## Monitoring (resource impact / conflict watch)

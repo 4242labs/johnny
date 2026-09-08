@@ -10,12 +10,20 @@ payload="$(cat 2>/dev/null)"
 [ -z "$sid" ] && sid="${CLAUDE_CODE_SESSION_ID:-}"
 [ -z "$sid" ] && exit 0
 CACHE="${VOICE_CACHE:-${TMPDIR:-/tmp}/nina-cache}"
-[ -f "$CACHE/$sid.alias" ] || exit 0   # voice not active for this session
+SWITCH="${VOICE_SWITCH:-$HOME/.config/agent-signal/nina-on}"
+if [ -f "$CACHE/$sid.alias" ]; then
+  al="$(cat "$CACHE/$sid.alias" 2>/dev/null)"
+elif [ -f "$CACHE/$sid.alias-off" ]; then
+  exit 0                              # this session explicitly turned it off
+elif [ -f "$SWITCH" ]; then
+  al="${VOICE_DEFAULT_ALIAS:-Sarah en}"   # default-on, no per-session activation
+else
+  exit 0                              # not active per-session, and default-on is off
+fi
 : > "$CACHE/$sid.turn" 2>/dev/null
 
 # The slash command sets this contract once, at activation; a long session
 # drifts off it. Restating it every turn is what actually keeps replies short.
-al="$(cat "$CACHE/$sid.alias" 2>/dev/null)"
 [ -n "$al" ] && printf '%s\n' \
   "nina is on. Speak first: voice $al \"<1-3 sentences carrying the answer>\". Then write only what has to be READ - code, commands, paths, numbers, tables, links. No prose restating what you just said aloud. If the whole answer is speakable, the written part can be a single line or nothing."
 

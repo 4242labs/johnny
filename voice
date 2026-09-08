@@ -50,6 +50,7 @@ case "$1" in
     _res="$(voice_lookup "${2:-}" "${3:-}")"; _rc=$?
     if [ $_rc -eq 0 ]; then
       _canon="$(voice_canon "$2")"; _lg="${_res##*|}"
+      rm -f "$VOICE_OUT.alias-off" 2>/dev/null
       printf '%s %s' "$_canon" "$_lg" > "$VOICE_OUT.alias"
       echo "nina: '$_canon ($_lg)' active for this session"
       # pre-warm the reverse-speak SSH master so the first utterance isn't slow
@@ -65,6 +66,7 @@ case "$1" in
     exit 0 ;;
   off)  # stop the per-session auto-speak hook
     rm -f "$VOICE_OUT.alias" "$VOICE_OUT.spoke" "$VOICE_OUT.turn" 2>/dev/null
+    : > "$VOICE_OUT.alias-off"   # explicit off overrides the default-on switch for this session
     echo "nina: off for this session"; exit 0 ;;
 esac
 

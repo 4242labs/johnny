@@ -9,6 +9,11 @@
 
 VOICE_CACHE="${VOICE_CACHE:-${TMPDIR:-/tmp}/nina-cache}"   # audio scratch (never in-repo)
 mkdir -p "$VOICE_CACHE" 2>/dev/null
+# Machine-wide default-on switch. Separate file from hey's — only hey is default-on
+# system-wide right now (operator directive 2026-09-07); nina stays opt-in per session
+# (`voice on`) until told otherwise. Presence of this file = default-on for nina too.
+VOICE_SWITCH="${VOICE_SWITCH:-$HOME/.config/agent-signal/nina-on}"
+VOICE_DEFAULT_ALIAS="${VOICE_DEFAULT_ALIAS:-Sarah en}"   # used only when default-on fires with no explicit `voice on`
 # Per-session token so concurrent agents isolate their audio files + playback and
 # never kill each other's afplay. Falls back to PID outside Claude Code.
 VOICE_SESSION="${VOICE_SESSION:-${CLAUDE_CODE_SESSION_ID:-$$}}"

@@ -19,11 +19,18 @@ export VOICE_HOME VOICE_SESSION="$sid"
 # shellcheck disable=SC1091
 . "$VOICE_HOME/config.sh"            # defines VOICE_OUT for THIS session
 
-[ -f "$VOICE_OUT.alias" ] || exit 0  # voice not active for this session
+if [ -f "$VOICE_OUT.alias" ]; then
+  al="$(cat "$VOICE_OUT.alias" 2>/dev/null)"
+elif [ -f "$VOICE_OUT.alias-off" ]; then
+  exit 0                              # this session explicitly turned it off
+elif [ -f "$VOICE_SWITCH" ]; then
+  al="$VOICE_DEFAULT_ALIAS"           # default-on, no per-session activation
+else
+  exit 0                              # not active per-session, and default-on is off
+fi
+[ -z "$al" ] && exit 0
 # model already spoke this turn? (.spoke newer than the turn marker) -> nothing to do
 [ -f "$VOICE_OUT.spoke" ] && [ "$VOICE_OUT.spoke" -nt "$VOICE_OUT.turn" ] && exit 0
-
-al="$(cat "$VOICE_OUT.alias" 2>/dev/null)"; [ -z "$al" ] && exit 0
 text="$(printf '%s' "$payload" | python3 "$HOOK_DIR/extract.py" 2>/dev/null)"
 [ -z "${text// /}" ] && exit 0
 

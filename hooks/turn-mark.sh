@@ -24,7 +24,13 @@ fi
 
 # The slash command sets this contract once, at activation; a long session
 # drifts off it. Restating it every turn is what actually keeps replies short.
-[ -n "$al" ] && printf '%s\n' \
-  "nina is on. Speak first: voice $al \"<1-3 sentences carrying the answer>\". Then write only what has to be READ - code, commands, paths, numbers, tables, links. No prose restating what you just said aloud. If the whole answer is speakable, the written part can be a single line or nothing."
+[ -z "$al" ] && exit 0
+msg="nina is on. Speak first: voice $al \"<1-3 sentences carrying the answer>\". Then write only what has to be READ - code, commands, paths, numbers, tables, links. No prose restating what you just said aloud. If the whole answer is speakable, the written part can be a single line or nothing."
+# Hermes injects only a JSON {"context": ...} reply; Claude takes plain stdout.
+case "$payload" in
+  *'"hook_event_name": "pre_llm_call"'*|*'"hook_event_name":"pre_llm_call"'*)
+    printf '%s' "$msg" | python3 -c 'import json,sys;print(json.dumps({"context":sys.stdin.read()}))' ;;
+  *) printf '%s\n' "$msg" ;;
+esac
 
 exit 0

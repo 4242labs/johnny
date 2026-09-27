@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read a Claude Code Stop-hook JSON event on stdin, return the last assistant
+"""Read a Claude Code Stop-hook (or Hermes post_llm_call) JSON event on stdin, return the last assistant
 message as plain speakable text (markdown/code/URLs stripped)."""
 import sys, json, re, os
 
@@ -8,12 +8,12 @@ try:
 except Exception:
     sys.exit(0)
 
+last = (data.get("extra") or {}).get("assistant_response")  # Hermes post_llm_call
 tp = data.get("transcript_path")
-if not tp or not os.path.exists(tp):
+if not last and (not tp or not os.path.exists(tp)):
     sys.exit(0)
 
-last = None
-with open(tp) as f:
+with open(tp) if not last else open(os.devnull) as f:
     for line in f:
         try:
             o = json.loads(line)

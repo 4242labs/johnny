@@ -16,7 +16,7 @@ VOICE_SWITCH="${VOICE_SWITCH:-$HOME/.config/agent-signal/nina-on}"
 VOICE_DEFAULT_ALIAS="${VOICE_DEFAULT_ALIAS:-Sarah en}"   # used only when default-on fires with no explicit `voice on`
 # Per-session token so concurrent agents isolate their audio files + playback and
 # never kill each other's afplay. Falls back to PID outside Claude Code.
-VOICE_SESSION="${VOICE_SESSION:-${CLAUDE_CODE_SESSION_ID:-$$}}"
+VOICE_SESSION="${VOICE_SESSION:-${HERMES_SESSION_ID:-${CLAUDE_CODE_SESSION_ID:-$$}}}"
 VOICE_OUT="$VOICE_CACHE/$VOICE_SESSION"   # engines append the extension (.wav/.mp3)
 
 # Cross-platform file playback: afplay (macOS) | paplay/aplay (Linux, incl. WSLg).
